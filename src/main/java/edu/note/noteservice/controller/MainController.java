@@ -6,13 +6,11 @@ import com.google.gson.Gson;
 import edu.note.noteservice.note.ComplianceNote;
 import edu.note.noteservice.note.Note;
 import edu.note.noteservice.note.ThankNote;
+import edu.note.noteservice.service.DataStorageService;
 import edu.note.noteservice.statuses.Status;
 import org.springframework.amqp.core.AmqpTemplate;
-import org.springframework.amqp.core.Message;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -21,14 +19,16 @@ import java.util.Map;
 public class MainController {
 
     private AmqpTemplate template;
+    private DataStorageService dataStorageService;
 
     @Autowired
-    public MainController(AmqpTemplate template) {
+    public MainController(AmqpTemplate template, DataStorageService dataStorageService) {
         this.template = template;
+        this.dataStorageService = dataStorageService;
     }
 
 
-    @PostMapping(path = "/note", consumes = "application/json", produces = "application/json")
+    @PostMapping(path = "/postNote", consumes = "application/json", produces = "application/json")
     public Status addMember(@RequestBody Object note) throws JsonProcessingException {
         String jsonString = new Gson().toJson(note, Map.class);
         Note noteItself = getStringNote((LinkedHashMap) note, jsonString);
@@ -38,6 +38,12 @@ public class MainController {
         return new Status("RECIEVED");
     }
 
+
+    @GetMapping(value = "/getNote/{id}", produces = "application/json")
+    public String index(@PathVariable Long id) {
+        dataStorageService.getById(id);
+        return "got test note";
+    }
 
 
     private Note getStringNote(LinkedHashMap note, String jsonString) throws JsonProcessingException {

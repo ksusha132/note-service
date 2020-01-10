@@ -1,7 +1,9 @@
 package edu.note.noteservice.service;
 
 import edu.note.noteservice.note.Note;
+import org.springframework.stereotype.Service;
 
+@Service
 public class DataStorageServiceImpl implements DataStorageService {
 
     // jdbc template

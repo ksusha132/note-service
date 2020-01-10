@@ -7,7 +7,6 @@ import org.springframework.amqp.core.Message;
 import org.springframework.amqp.rabbit.annotation.EnableRabbit;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.amqp.utils.SerializationUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
@@ -28,13 +27,13 @@ public class RabbitMqListener {
 
 
     @RabbitListener(queues = "compliance")
-    public void processQueue1(Message message) {
+    public void processQueue1(Message message) throws InterruptedException {
         Note note = (Note) SerializationUtils.deserialize(message.getBody());
         noteComplianceProcessingServiceImpl.process(note);
     }
 
     @RabbitListener(queues = "thank")
-    public void processQueue2(Message message) {
+    public void processQueue2(Message message) throws InterruptedException {
         Note note = (Note) SerializationUtils.deserialize(message.getBody());
         noteThankProcessingServiceImpl.process(note);
     }

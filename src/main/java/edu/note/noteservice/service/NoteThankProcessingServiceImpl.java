@@ -7,9 +7,16 @@ import org.springframework.stereotype.Service;
 @Service
 public class NoteThankProcessingServiceImpl implements NoteProcessingService {
 
+    private DataStorageService dataStorageService;
+
+    public NoteThankProcessingServiceImpl(DataStorageService dataStorageService) {
+        this.dataStorageService = dataStorageService;
+    }
+
     @Override
-    public Status process(Note note) {
-        Status status = new Status("Cool");
-        return status;
+    public Status process(Note note) throws InterruptedException {
+        Thread.sleep(1000);
+        dataStorageService.saveThank(note);
+        return new Status("Cool");
     }
 }
