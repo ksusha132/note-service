@@ -5,11 +5,11 @@ import edu.note.noteservice.statuses.Status;
 import org.springframework.stereotype.Service;
 
 @Service
-public class NoteProcessingServiceImpl implements NoteProcessingService {
+public class NoteThankProcessingServiceImpl implements NoteProcessingService {
+
     @Override
     public Status process(Note note) {
-        Status status = new Status();
-        status.setStatus("Ok");
+        Status status = new Status("Cool");
         return status;
     }
 }

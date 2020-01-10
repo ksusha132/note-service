@@ -32,10 +32,13 @@ public class MainController {
     public Status addMember(@RequestBody Object note) throws JsonProcessingException {
         String jsonString = new Gson().toJson(note, Map.class);
         Note noteItself = getStringNote((LinkedHashMap) note, jsonString);
-        // todo check if null
-        template.convertAndSend("note", noteItself);
+        if (noteItself != null) {
+            template.convertAndSend(noteItself.getType(), noteItself);
+        }
         return new Status("RECIEVED");
     }
+
+
 
     private Note getStringNote(LinkedHashMap note, String jsonString) throws JsonProcessingException {
         ObjectMapper mapper = new ObjectMapper();

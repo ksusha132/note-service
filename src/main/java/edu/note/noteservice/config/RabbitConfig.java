@@ -29,4 +29,19 @@ public class RabbitConfig {
     public Queue myQueue1() {
         return new Queue("note");
     }
+
+    @Bean
+    public Queue myQueue2() {
+        return new Queue("thank");
+    }
+
+    @Bean
+    public Queue myQueue3() {
+        return new Queue("compliance");
+    }
+
+    @Bean
+    public Queue myQueue4() {
+        return new Queue("error");
+    }
 }
