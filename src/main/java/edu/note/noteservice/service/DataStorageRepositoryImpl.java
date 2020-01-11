@@ -6,10 +6,13 @@ import edu.note.noteservice.note.ThankNote;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
+import java.util.concurrent.atomic.AtomicInteger;
+
 @Repository
 public class DataStorageRepositoryImpl implements DataStorageRepository {
 
     private final JdbcTemplate template;
+    private AtomicInteger id = new AtomicInteger(1);
 
     public DataStorageRepositoryImpl(JdbcTemplate template) {
         this.template = template;
@@ -19,15 +22,15 @@ public class DataStorageRepositoryImpl implements DataStorageRepository {
     @Override
     public void saveCompliance(ComplianceNote note) {
         template.update(
-                "insert into notes (id, type, cause, comment, place) values(?,?,?,?,?)",
-                note.getId(), note.getType(), note.getCause(), note.getComment(), note.getPlace());
+                "insert into notes (id, comment, cause, place, whothank, type) values(?,?,?,?,?,?)",
+                (note.getId() + id.incrementAndGet()), note.getComment(), note.getCause(), note.getPlace(), null, note.getType());
     }
 
     @Override
     public void saveThank(ThankNote note) {
         template.update(
-                "insert into notes (id, type, whothank) values(?,?,?)",
-                note.getId(), note.getType(), note.getWhoThankTo());
+                "insert into notes (id, comment, cause, place, whothank, type) values(?,?,?,?,?,?)",
+                (note.getId() + id.incrementAndGet()), null, null, null, note.getWhoThankTo(), note.getType());
     }
 
     @Override
