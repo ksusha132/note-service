@@ -1,5 +1,6 @@
 package edu.note.noteservice.service;
 
+import edu.note.noteservice.mapper.NoteRowMapper;
 import edu.note.noteservice.note.ComplianceNote;
 import edu.note.noteservice.note.Note;
 import edu.note.noteservice.note.ThankNote;
@@ -35,15 +36,6 @@ public class DataStorageRepositoryImpl implements DataStorageRepository {
 
     @Override
     public Note getById(Long id) {
-//        return template.queryForObject(
-//                "select * from notes where id = :id",
-//                new MapSqlParameterSource("id", id),
-//                (rs, rowNum) ->
-//                        Optional.of(new Note(
-//                                rs.getLong("id")
-//                        ))
-//        );
-        // get all fields than make an object
-        return null;
+        return template.queryForObject("select * from notes where id = " + id, new NoteRowMapper());
     }
 }
