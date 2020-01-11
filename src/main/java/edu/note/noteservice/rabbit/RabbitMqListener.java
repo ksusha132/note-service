@@ -29,7 +29,7 @@ public class RabbitMqListener {
     @RabbitListener(queues = "compliance")
     public void processQueue1(Message message) throws InterruptedException {
         Note note = (Note) SerializationUtils.deserialize(message.getBody());
-        noteComplianceProcessingServiceImpl.process(note);
+        noteComplianceProcessingServiceImpl.process(note); //
     }
 
     @RabbitListener(queues = "thank")

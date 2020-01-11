@@ -6,7 +6,7 @@ import com.google.gson.Gson;
 import edu.note.noteservice.note.ComplianceNote;
 import edu.note.noteservice.note.Note;
 import edu.note.noteservice.note.ThankNote;
-import edu.note.noteservice.service.DataStorageService;
+import edu.note.noteservice.service.DataStorageRepository;
 import edu.note.noteservice.statuses.Status;
 import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,12 +19,12 @@ import java.util.Map;
 public class MainController {
 
     private AmqpTemplate template;
-    private DataStorageService dataStorageService;
+    private DataStorageRepository dataStorageRepository;
 
     @Autowired
-    public MainController(AmqpTemplate template, DataStorageService dataStorageService) {
+    public MainController(AmqpTemplate template, DataStorageRepository dataStorageRepository) {
         this.template = template;
-        this.dataStorageService = dataStorageService;
+        this.dataStorageRepository = dataStorageRepository;
     }
 
 
@@ -41,7 +41,7 @@ public class MainController {
 
     @GetMapping(value = "/getNote/{id}", produces = "application/json")
     public String index(@PathVariable Long id) {
-        dataStorageService.getById(id);
+        dataStorageRepository.getById(id);
         return "got test note";
     }
 

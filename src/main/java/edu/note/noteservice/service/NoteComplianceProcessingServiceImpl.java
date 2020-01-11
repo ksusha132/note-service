@@ -1,24 +1,24 @@
 package edu.note.noteservice.service;
 
+import edu.note.noteservice.note.ComplianceNote;
 import edu.note.noteservice.note.Note;
 import edu.note.noteservice.statuses.Status;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 public class NoteComplianceProcessingServiceImpl implements NoteProcessingService {
 
 
-    private DataStorageService dataStorageService;
+    private DataStorageRepository dataStorageRepository;
 
-    public NoteComplianceProcessingServiceImpl(DataStorageService dataStorageService) {
-        this.dataStorageService = dataStorageService;
+    public NoteComplianceProcessingServiceImpl(DataStorageRepository dataStorageRepository) {
+        this.dataStorageRepository = dataStorageRepository;
     }
 
     @Override
     public Status process(Note note) throws InterruptedException {
         Thread.sleep(1000);
-        dataStorageService.saveCompliance(note);
+        dataStorageRepository.saveCompliance((ComplianceNote) note);
         return new Status("OK");
     }
 }

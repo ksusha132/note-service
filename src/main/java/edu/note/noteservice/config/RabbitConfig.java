@@ -1,12 +1,13 @@
 package edu.note.noteservice.config;
 
-import org.springframework.amqp.core.AmqpAdmin;
-import org.springframework.amqp.core.Queue;
+import org.springframework.amqp.core.*;
 import org.springframework.amqp.rabbit.connection.CachingConnectionFactory;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.amqp.rabbit.core.RabbitAdmin;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.context.annotation.Bean;
+
+import java.io.IOException;
 
 public class RabbitConfig {
 
@@ -16,12 +17,12 @@ public class RabbitConfig {
     }
 
     @Bean
-    public AmqpAdmin amqpAdmin() {
+    public AmqpAdmin amqpAdmin() throws IOException {
         return new RabbitAdmin(connectionFactory());
     }
 
     @Bean
-    public RabbitTemplate rabbitTemplate() {
+    public RabbitTemplate rabbitTemplate() throws IOException {
         return new RabbitTemplate(connectionFactory());
     }
 
@@ -43,5 +44,20 @@ public class RabbitConfig {
     @Bean
     public Queue myQueue4() {
         return new Queue("error");
+    }
+
+    @Bean
+    public DirectExchange directExchange() {
+        return new DirectExchange("exchange-note");
+    }
+
+    @Bean
+    public Binding binding1() {
+        return BindingBuilder.bind(myQueue3()).to(directExchange()).with("compl");
+    }
+
+    @Bean
+    public Binding binding2() {
+        return BindingBuilder.bind(myQueue2()).to(directExchange()).with("thnks");
     }
 }
