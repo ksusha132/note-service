@@ -3,12 +3,14 @@ package edu.note.noteservice.controller;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
+import edu.note.noteservice.exceptions.NotProcessedNoteException;
 import edu.note.noteservice.note.ComplianceNote;
 import edu.note.noteservice.note.Note;
 import edu.note.noteservice.note.ThankNote;
 import edu.note.noteservice.service.DataStorageRepository;
 import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -41,7 +43,11 @@ public class MainController {
 
     @GetMapping(value = "/getNote/{id}", produces = "application/json")
     public Note index(@PathVariable Long id) {
-        return dataStorageRepository.getById(id);
+        try {
+            return dataStorageRepository.getById(id);
+        } catch (EmptyResultDataAccessException e) {
+            throw new NotProcessedNoteException("This note has not processed yet");
+        }
     }
 
 
