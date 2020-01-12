@@ -7,9 +7,9 @@ import edu.note.noteservice.note.ComplianceNote;
 import edu.note.noteservice.note.Note;
 import edu.note.noteservice.note.ThankNote;
 import edu.note.noteservice.service.DataStorageRepository;
-import edu.note.noteservice.statuses.Status;
 import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.LinkedHashMap;
@@ -29,20 +29,19 @@ public class MainController {
 
 
     @PostMapping(path = "/postNote", consumes = "application/json", produces = "application/json")
-    public Status addMember(@RequestBody Object note) throws JsonProcessingException {
+    public HttpStatus addMember(@RequestBody Object note) throws JsonProcessingException {
         String jsonString = new Gson().toJson(note, Map.class);
         Note noteItself = getStringNote((LinkedHashMap) note, jsonString);
         if (noteItself != null) {
             template.convertAndSend(noteItself.getType(), noteItself);
         }
-        return new Status("RECIEVED");
+        return HttpStatus.ACCEPTED;
     }
 
 
     @GetMapping(value = "/getNote/{id}", produces = "application/json")
-    public String index(@PathVariable Long id) {
-        dataStorageRepository.getById(id);
-        return "got test note";
+    public Note index(@PathVariable Long id) {
+        return dataStorageRepository.getById(id);
     }
 
 

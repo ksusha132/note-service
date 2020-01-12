@@ -36,6 +36,6 @@ public class DataStorageRepositoryImpl implements DataStorageRepository {
 
     @Override
     public Note getById(Long id) {
-        return template.queryForObject("select * from notes where id = " + id, new NoteRowMapper());
+        return template.queryForObject("select * from notes where id = ?", new Object[]{id}, new NoteRowMapper());
     }
 }

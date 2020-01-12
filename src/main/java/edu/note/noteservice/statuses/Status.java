@@ -1,20 +1,17 @@
 package edu.note.noteservice.statuses;
 
-public class Status {
+public enum Status {
+    RECEIVED("received"),
+    ERROR("error"),
+    OK("ok");
+
     private String status;
 
-    public Status() {
-    }
-
-    public Status(String status) {
+    Status(String status) {
         this.status = status;
     }
 
-    public String getStatus() {
+    public String getNoteType() {
         return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
     }
 }

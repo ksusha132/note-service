@@ -19,6 +19,6 @@ public class NoteComplianceProcessingServiceImpl implements NoteProcessingServic
     public Status process(Note note) throws InterruptedException {
         Thread.sleep(1000);
         dataStorageRepository.saveCompliance((ComplianceNote) note);
-        return new Status("OK");
+        return Status.OK;
     }
 }

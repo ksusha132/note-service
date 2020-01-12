@@ -18,6 +18,6 @@ public class NoteThankProcessingServiceImpl implements NoteProcessingService {
     public Status process(Note note) throws InterruptedException {
         Thread.sleep(1000);
         dataStorageRepository.saveThank((ThankNote) note);
-        return new Status("Cool");
+        return Status.OK;
     }
 }

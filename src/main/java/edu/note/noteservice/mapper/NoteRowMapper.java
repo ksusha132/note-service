@@ -13,7 +13,7 @@ public class NoteRowMapper implements RowMapper<Note> {
     @Override
     public Note mapRow(ResultSet rs, int arg1) throws SQLException {
 
-        String noteType = rs.getString("type");
+        String noteType = rs.getString("type").trim();
         Note note = null;
 
         switch (noteType) {
