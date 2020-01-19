@@ -7,6 +7,7 @@ import edu.note.noteservice.exceptions.NotProcessedNoteException;
 import edu.note.noteservice.note.ComplianceNote;
 import edu.note.noteservice.note.Note;
 import edu.note.noteservice.note.ThankNote;
+import edu.note.noteservice.security.Authenticated;
 import edu.note.noteservice.service.DataStorageRepository;
 import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +15,7 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -31,7 +33,8 @@ public class MainController {
 
 
     @PostMapping(path = "/postNote", consumes = "application/json", produces = "application/json")
-    public HttpStatus addMember(@RequestBody Object note) throws JsonProcessingException {
+    @Authenticated
+    public HttpStatus addMember(HttpServletRequest request, @RequestBody Object note) throws JsonProcessingException {
         String jsonString = new Gson().toJson(note, Map.class);
         Note noteItself = getStringNote((LinkedHashMap) note, jsonString);
         if (noteItself != null) {
@@ -42,7 +45,8 @@ public class MainController {
 
 
     @GetMapping(value = "/getNote/{id}", produces = "application/json")
-    public Note index(@PathVariable Long id) {
+    @Authenticated
+    public Note index(HttpServletRequest request, @PathVariable Long id) {
         try {
             return dataStorageRepository.getById(id);
         } catch (EmptyResultDataAccessException e) {
